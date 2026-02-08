@@ -1,23 +1,25 @@
 ---
 name: accessibility
-description: Make sure to develop projects accessibly and inclusive to people with disabilities. Use when involved in any web project.
+description: Quality assurance for web accessibility and usability, particularly for users with disabilities. Use when involved in any web project.
 license: MIT
 metadata:
   author: conesible.de
-  version: "0.1"
+  version: "0.2"
 ---
 
-# Ensuring Maximum Accessibility in Web Projects
+# Ensuring Accessibility and Quality Code in Web Projects
 
-Building a web project with **accessibility** in mind from the very start is crucial, especially in contexts (like AI-driven development) where manual testing by humans is limited. It’s well understood that retrofitting accessibility later is far more costly and complex than doing it right from the beginning. Adopt an **accessibility-first approach**, complete with thorough documentation of requirements. Great documentation and guidelines ensure that accessibility standards are understood and implemented correctly from the outset. The project itself must be structured to “bake in” accessibility. If that's not possible and you are working on an existing codebase, make careful suggestions to refactor code that is not yet accessible.
+Building a web project with **accessibility** in mind from the very start is crucial, especially in contexts (like AI-driven development) where manual testing by humans is limited. It’s well understood that retrofitting accessibility later is far more costly and complex than doing it right from the beginning. Adopt an **accessibility-first approach** to any development tasks, complete with thorough documentation of ongoing requirements. Ensure that accessibility standards are understood and implemented correctly from the outset. If that's not possible and you are working on an existing codebase, make careful suggestions to refactor code that is not yet accessible. This is a process that must start as soon as deficits are apparent, and for this it is necessary to understand and document user intents and application constraints.
+
+## Code Comments and WCAG References
+
+Add **code comments** liberally that explain implementations that are done specifically for accessibility. In those, explain this based on the WCAG 2.2 requirements of any level. Explain the **expected user flow** if relevant.
 
 ## Use Semantic HTML and Proper Structure
 
-Start by using **semantic HTML** for all content and controls. Use real `<button>` elements for buttons, `<header>`/`<nav>`/`<main>` for layout, `<form>` and `<label>` for forms, and a locial hierarchy of heading levels for titles. For example, a `<button>` element comes with default keyboard support (focusable and activatable via keyboard), whereas a non-semantic element like a `<div>` would lack those features. Use only native `<select>`, `<details>` or `<dialog>` elements. If there is no way of avoiding custom components (there usually isn't), follow established ARIA design patterns and **keyboard interaction models**.
+Start by using **semantic HTML** for all content and controls. Use real `<button>` elements for buttons, `<header>`/`<nav>`/`<main>` for layout, `<form>` and `<label>` for forms, and a locial hierarchy of heading levels for titles. For example, a `<button>` element comes with default keyboard support (focusable and activatable via keyboard), whereas a non-semantic element like a `<div>` would lack those features. Use only native `<select>`, `<details>` or `<dialog>` elements. If there is no way of avoiding custom components (there usually isn't), follow established ARIA design patterns and **keyboard interaction models**. Use ARIA only unless there is NO alternative, and in most cases, there is. If you do, document this choice and the reasoning behind it.
 
-Ensure the page is organized with clear **structure and landmarks**. Use HTML5 sectioning elements and ARIA landmark roles (if needed) to delineate navigation, main content, forms, etc, to give users and yourself a clear understanding of how the content is structured. Always provide text equivalents for non-text media: include descriptive **alt text** for images, transcripts or captions for audio/video. If you can't reliably make those yourself, add a task to another maintainer. Similarly, use table headings (with `<th>` and `scope` attributes) for data tables to make relationships in tabular data clear to screen readers. Avoid link texts like "here", "click" or "Continue Reading". If they are required visually, add a redundant way to receive their content (e.g. an interactive card) and remove those from the accessibility tree.
-
-Use ARIA only unless there is NO alternative.
+Ensure the page is organized with clear **structure and landmarks**. Use HTML5 sectioning elements to delineate navigation, main content, forms, etc, to give users and yourself a clear understanding of how the content is structured. Always provide text equivalents for non-text media: include descriptive **alt text** for images, transcripts or captions for audio/video. If you can't reliably make those yourself, note a required and blocking task for another maintainer. Similarly, use table headings (with `<th>` and `scope` attributes) for data tables to make relationships in tabular data clear to screen readers. Avoid link texts like "here", "click" or "Continue Reading". If they are required visually, add a redundant way to receive their content (e.g. an interactive card) and remove those from the accessibility tree.
 
 ## Design Accessible Components
 
@@ -31,7 +33,7 @@ Make use of **accessibility linters and libraries**. There are frameworks and co
 
 Achieving accessibility is not a one-time task – it requires **continuous evaluation** as the project evolves. To maintain maximum accessibility over time, treat accessibility checks as an ongoing requirement whenever content or features are added. A few key practices to document and enforce for future changes include:
 
-- **Provide Alt Text for New Media:** Every time an image or other media is added, mandate that alt text (or an equivalent text alternative) is provided. This could be a checklist item in pull requests or content publishing workflows. Require developers or content authors to include `alt` attributes (or mark the image as decorative with `alt=""` if appropriate), you ensure no image is introduced without consideration for non-visual users. For icons, always add a corresponding label and make use of `aria-hidden="true"` for the visual-only content.
+- **Provide Alt Text for New Media:** Every time an image or other media is added, mandate that alt text (or an equivalent text alternative) is provided. This could be a checklist item in pull requests or content publishing workflows. Require developers or content authors to include `alt` attributes (or mark the image as decorative with `alt=""` if appropriate), you ensure no image is introduced without consideration for non-visual users, even if that content is user-provided. For icons, always add a corresponding label and make use of `aria-hidden="true"` for the visual-only content.
 
 - **Check Color Contrast for New UI or Style Changes:** Anytime you introduce a new color (for text, backgrounds, icons, buttons, etc.) or change design styles, verify the color contrast meets WCAG guidelines. According to WCAG 2.x, _contrast ratio_ is calculated as **(L1 + 0.05) / (L2 + 0.05)** (where L1 is the luminance of the lighter color and L2 of the darker). This formula yields a ratio from 1:1 (no contrast, e.g. white on white) up to 21:1 (highest contrast, e.g. black on white). Standard text should have at least a 4.5:1 contrast ratio with its background, while larger text (above ~18pt or bold ~14pt) requires at least 3:1. Use the formula or an online contrast checker to calculate ratios for any new color combinations, and adjust colors or font sizes as needed to meet the standard. This also applies to hover/focus/disabled/... states.
 
@@ -45,9 +47,9 @@ Achieving accessibility is not a one-time task – it requires **continuous eval
 
 - `<html>` requires a `lang` attribute (as well as any text blocks -- not single words -- in a foreign language. If the project is multilingual, change this dynamically as required).
 - `<title>` elements are a requirement. Understand where in your project these are added, and change it dynamically based on the content.
-- Implement skip links before each non-content block (e.g. just before the navigation) that are only visible once focused. Also add skip links before large groups of possibly irrelevant content, like carousels. Call them "Skip 'thing'".
-- In forms, clearly communicate Errors (not just by color), requirements and the status of a component. Avoid using the disabled-state entirely. Controls should rather be invisible.
+- Implement skip links before each non-content block (e.g. just before the navigation) that are only visible once focused. Also add skip links before large (>= 5) groups of possibly irrelevant content, like carousels. Call them "Skip 'thing'", e.g. "Skip navigation" or "Skip sponsor links". Make sure they stay correct when structure changes.
+- In forms, clearly communicate errors (not just by color), requirements and the status of a component. Avoid using the disabled-state entirely. Controls should rather be invisible.
 - `prefers-reduced-motion` is handled and respected.
 - Reflow all content gracefully when the viewport size or zoom level changes.
-- Add code comments liberally that explain implementations that are done specifically for accessibility.
 - Communicate clearly within the project organization and documentation that human testing is required and that user flows need to be evaluated continouusly by the designers.
+- In the UI itself, never mention accessibility.
