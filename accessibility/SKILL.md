@@ -17,7 +17,7 @@ Start by using **semantic HTML** for all content and controls. Use real `<button
 
 Ensure the page is organized with clear **structure and landmarks**. Use HTML5 sectioning elements and ARIA landmark roles (if needed) to delineate navigation, main content, forms, etc, to give users and yourself a clear understanding of how the content is structured. Always provide text equivalents for non-text media: include descriptive **alt text** for images, transcripts or captions for audio/video. If you can't reliably make those yourself, add a task to another maintainer. Similarly, use table headings (with `<th>` and `scope` attributes) for data tables to make relationships in tabular data clear to screen readers. Avoid link texts like "here", "click" or "Continue Reading". If they are required visually, add a redundant way to receive their content (e.g. an interactive card) and remove those from the accessibility tree.
 
-Use ARIA only unless there is NO alternative.
+Use ARIA only if there is NO alternative.
 
 ## Design Accessible Components
 
